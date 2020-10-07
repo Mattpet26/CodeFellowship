@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Page</title>
+</head>
+<body>
+
+<div th:replace="fragments/nav :: nav"></div>
+<div th:replace="fragments/header :: header"></div>
+
+
+
+<h1 th:if="${user}" th:text="${user.username}"></h1>
+<h1 th:unless="${user}" th:text="'That user does not exist yet, invite them!'"></h1>
+
+<section th:if="${user}" th:each="user : ${user}">
+    <p th:text="${user.firstName}"></p>
+    <p th:text="${user.lastName}"></p>
+    <p th:text="${user.dateOfBirth}"></p>
+    <p th:text="${user.bio}"></p>
+</section >
+
+<form action="/addPost" method="POST">
+    <input type="text" name="body">
+    <input type="hidden" name="id" th:value="${user.id}">
+    <input type="submit" value="submit">
+</form>
+
+<section th:if="${user}">
+    <p th:each="post : ${user.posts}" th:text="${post}"></p>
+</section>
+
+<form action="/follow" method="POST">
+    <input type="hidden" name="username" th:value="${user.username}">
+    <label for="follower">Person following
+        <select name="follower">
+            <option th:each="users : ${user.post}" th:value="${user.id}"></option>
+        </select>
+    </label>
+
+    <label for="follower"> Person being followed
+        <select name="followee">
+            <option th:each="users : ${user.post}" th:value="${user.id}"></option>
+        </select>
+    </label>
+    <input type="submit" value="follow">
+</form>
+
+<!--<form action="/follow" method="POST">-->
+<!--    <input type="hidden" name="username" th:value="${user.username}">-->
+<!--    <input type="submit" value="follow this user">-->
+<!--</form>-->
+
+
+</body>
+</html>
