@@ -8,6 +8,13 @@
 <!--// The feed will show each user that I follow.-->
 <!--// If A is following B-->
 <!--    // B's posts will show below. ${user.following.post}?-->
-
+<section th:if="${user}">
+    <section th:each="post : ${user.posts}">
+        <p th:text="${post}"></p>
+        <ul>
+            <li th:each="helper : ${post.usersWhoIHaveFollowed}" th:text="help.body"></li>
+        </ul>
+    </section>
+</section>
 </body>
 </html>

@@ -42,7 +42,7 @@ public class ApplicationUserController {
             userinfo.addAttribute("userDoesNotExist", true);
         }
         userinfo.addAttribute("user", user);
-        userinfo.addAttribute("principal", principal.getName());
+        userinfo.addAttribute("principal", principal);
         return "userdetail";
     }
 
@@ -66,7 +66,7 @@ public class ApplicationUserController {
         //sends user home
         return new RedirectView("/login");
     }
-    @PostMapping("/feed/{username}")
+    @PostMapping("/feed") // /{username}
     public String showFeedDetails(@PathVariable String username, Model userinfo, Principal principal) {
         ApplicationUser user = applicationUserRepository.findByUsername(username);
         userinfo.addAttribute("user", user);
