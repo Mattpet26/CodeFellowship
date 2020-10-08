@@ -31,26 +31,22 @@
     <p th:each="post : ${user.posts}" th:text="${post}"></p>
 </section>
 
-<form action="/follow" method="POST">
+<form action="/feed" method="POST">
     <input type="hidden" name="username" th:value="${user.username}">
     <label for="follower">Person following
         <select name="follower">
-            <option th:each="users : ${user.post}" th:value="${user.id}"></option>
+            <option th:each="users : ${user.posts}" th:value="${user.id}"></option>
         </select>
     </label>
 
-    <label for="follower"> Person being followed
+    <label for="followee"> Person being followed
         <select name="followee">
-            <option th:each="users : ${user.post}" th:value="${user.id}"></option>
+            <option th:each="users : ${user.posts}" th:value="${user.id}"></option>
         </select>
     </label>
     <input type="submit" value="follow">
 </form>
 
-<!--<form action="/follow" method="POST">-->
-<!--    <input type="hidden" name="username" th:value="${user.username}">-->
-<!--    <input type="submit" value="follow this user">-->
-<!--</form>-->
 
 
 </body>
