@@ -5,9 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 public class ApplicationUser implements UserDetails {
@@ -22,6 +20,17 @@ public class ApplicationUser implements UserDetails {
     public String lastName;
     public Date dateOfBirth;
     public String bio;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "follows",
+            joinColumns = { @JoinColumn(name = "follower")},
+            inverseJoinColumns = {@JoinColumn(name = "following")}
+    )
+    Set<ApplicationUser> following = new HashSet<>();
+
+    @ManyToMany(mappedBy = "following")
+    Set<ApplicationUser> followers = new HashSet<>();
 
     // this mapped by may need to change. It needs to match the sql database
     @OneToMany(mappedBy = "applicationUser", cascade = CascadeType.ALL)
@@ -128,4 +137,38 @@ public class ApplicationUser implements UserDetails {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+
+
+    public void removeFollower(ApplicationUser follower) {
+        followers.remove(follower);
+    }
+
+    public void removeFollow(ApplicationUser userToUnfollow) {
+        following.remove(userToUnfollow);
+    }
+
+    public void setFollowing(Set<ApplicationUser> following) {
+        this.following = following;
+    }
+
+    public void setFollowers(Set<ApplicationUser> followers) {
+        this.followers = followers;
+    }
+
+    public Set<ApplicationUser> getFollowers() {
+        return followers;
+    }
+
+    public void follow(ApplicationUser userToFollow) {
+        following.add(userToFollow);
+    }
+
+    public void getFollower(ApplicationUser follower) {
+        followers.add(follower);
+    }
+
+    public Set<ApplicationUser> getFollowing() {
+        return following;
+    }
+
 }

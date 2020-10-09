@@ -15,18 +15,6 @@ public class Post {
 
     @ManyToOne
     public ApplicationUser applicationUser;
-
-    @ManyToMany(cascade = CascadeType.REMOVE)
-    @JoinTable(
-            name="followingTable",
-            joinColumns = {@JoinColumn (name="giver")},
-            inverseJoinColumns = {@JoinColumn (name="receiver")}
-    )
-    public Set<Post> usersWhoFollowMe = new HashSet<>();
-
-    @ManyToMany(mappedBy = "usersWhoFollowMe")
-    public Set<Post> usersWhoIHaveFollowed= new HashSet<>();
-
     public String body;
     public Date timeStamp;
 

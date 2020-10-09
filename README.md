@@ -12,6 +12,13 @@
 ```
 git clone https://github.com/Mattpet26/CodeFellowship.git
 ```
+- Users **MUST** go to src/main/resources/application.properties and make edits
+- Be sure to edit the password, username and create a database with SQL
+```
+Username + Password must be changed to match the user.
+spring.datasource.url=jdbc:postgresql://localhost:5432/ (your database here)
+```
+
 - Users can go to src/main/java/com.petersen.CodeFellowship/models and hit play
 
 - Now go to the web and utilize the localhost and create a user
