@@ -6,9 +6,12 @@ import com.petersen.CodeFellowship.models.user.ApplicationUser;
 import com.petersen.CodeFellowship.models.user.ApplicationUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.security.Principal;
 import java.sql.Date;
 
 @Controller
@@ -34,17 +37,40 @@ public class PostController {
         return new RedirectView("/user/" + user.getUsername());
     }
     @PostMapping("/follow")
-    public RedirectView followPost(String username, long follower, long followee){
-        Post followerPost = postRepository.findById(follower).get();
+    public RedirectView followUser(Principal principal, Long id) {
+        ApplicationUser userToFollow = applicationUserRepository.getOne(id);
+        ApplicationUser follower = applicationUserRepository.findByUsername(principal.getName());
 
-        Post followeePost = postRepository.findById(followee).get();
+        userToFollow.getFollower(follower);
+        follower.follow(userToFollow);
 
-        followerPost.usersWhoFollowMe.add(followeePost); //usersWhoFollowMe
-        followeePost.usersWhoIHaveFollowed.add(followerPost); //usersWhoIHaveFollowed
+        applicationUserRepository.save(userToFollow);
+        applicationUserRepository.save(follower);
 
-        postRepository.save(followerPost);
-        postRepository.save(followeePost);
+        System.out.println("following a new user!" + userToFollow.getUsername());
 
-        return new RedirectView("/user/" + username);
+        return new RedirectView("/user/" + userToFollow.getUsername()); // get the username not the id
+    }
+    @PostMapping("/unfollow")
+    public RedirectView unfollowUser(Principal principal, Long id) {
+        ApplicationUser userToUnfollow = applicationUserRepository.getOne(id);
+        ApplicationUser follower = applicationUserRepository.findByUsername(principal.getName());
+
+        userToUnfollow.removeFollower(follower);
+        follower.removeFollow(userToUnfollow);
+
+        applicationUserRepository.save(userToUnfollow);
+        applicationUserRepository.save(follower);
+
+        System.out.println("You unfollowed a user!" + userToUnfollow.getUsername());
+
+        return new RedirectView("/user/" + userToUnfollow.getUsername());
+    }
+    @GetMapping("/feed")
+    public String renderFeed(Model m, Principal principal) {
+        ApplicationUser user = applicationUserRepository.findByUsername(principal.getName());
+        m.addAttribute("user", user);
+        m.addAttribute("principal", principal);
+        return "feed";
     }
 }

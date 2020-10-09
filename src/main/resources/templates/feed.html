@@ -5,16 +5,27 @@
     <title>Title</title>
 </head>
 <body>
-<!--// The feed will show each user that I follow.-->
-<!--// If A is following B-->
-<!--    // B's posts will show below. ${user.following.post}?-->
+
+<div th:replace="fragments/nav :: nav"></div>
+<div th:replace="fragments/header :: header"></div>
+
 <section th:if="${user}">
     <section th:each="post : ${user.posts}">
         <p th:text="${post}"></p>
         <ul>
-            <li th:each="helper : ${post.usersWhoIHaveFollowed}" th:text="help.body"></li>
+            <li th:each="followingUser : ${post.usersWhoIHaveFollowed}" th:text="followingUser.body"></li>
         </ul>
     </section>
 </section>
+
+
+<div th:each="follow : ${user.getFollowing()}">
+    <div th:each="followPost : ${follow.getPosts()}">
+        <p>Posted by: <a th:href="'/user/' + ${follow.getUsername()}" th:text="${follow.getUsername()}"></a> Posted on: <span th:text="${followPost.getTimeStamp()}"></span></p>
+        <p th:text="${followPost.getBody()}"></p>
+    </div>
+</div>
+
+
 </body>
 </html>
