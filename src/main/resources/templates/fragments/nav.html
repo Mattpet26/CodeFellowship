@@ -8,9 +8,10 @@
 
 <nav th:fragment="nav">
     <ul><a href="/"><li>Home</li></a></ul>
-    <ul><a href="/login"><li>Login</li></a></ul>
-    <ul><a href="/logout"><li>Logout</li></a></ul>
-    <ul><a href="/signup"><li>Sign up</li></a></ul>
+    <ul th:if="${user} == null"><a href="/login"><li>Login</li></a></ul>
+    <ul th:if="${user} != null"><a href="/logout"><li>Logout</li></a></ul>
+    <ul th:if="${user} == null"><a href="/signup"><li>Sign up</li></a></ul>
+    <ul th:if="${user} != null"><a href="/feed"><li>Feed</li></a></ul>
 </nav>
 
 <header th:fragment="header">

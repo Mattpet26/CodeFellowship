@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()                                  // cross site resource forgery
                 .authorizeRequests()                               // all lines until AND are connected
                 .antMatchers("/").permitAll()           // permit home route
-                .antMatchers("/signup", "/login", "/newuser", "/myprofile").permitAll()     // permit them
+                .antMatchers("/signup", "/login", "/newuser", "/userdetail").permitAll()     // permit them
                 .anyRequest().authenticated()                      // forces user to login or authenticate themselves
 //                .anyRequest().permitAll()
                 .and()
