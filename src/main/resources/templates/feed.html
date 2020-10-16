@@ -9,14 +9,14 @@
 <div th:replace="fragments/nav :: nav"></div>
 <div th:replace="fragments/header :: header"></div>
 
-<section th:if="${user}">
-    <section th:each="post : ${user.posts}">
-        <p th:text="${post}"></p>
-        <ul>
-            <li th:each="followingUser : ${post.usersWhoIHaveFollowed}" th:text="followingUser.body"></li>
-        </ul>
-    </section>
-</section>
+<!--<section th:if="${user}">-->
+<!--    <section th:each="post : ${user.posts}">-->
+<!--        <p th:text="${post}"></p>-->
+<!--        <ul>-->
+<!--            <li th:each="followingUser : ${post.usersWhoIHaveFollowed}" th:text="followingUser.body"></li>-->
+<!--        </ul>-->
+<!--    </section>-->
+<!--</section>-->
 
 
 <div th:each="follow : ${user.getFollowing()}">
